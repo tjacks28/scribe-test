@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NorthShore Commercial Bank — Treasury Direct</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 13px;
+    color: #333;
+    background: #eef1f4;
+  }
+  a { color: #15497c; }
+
+  /* Header */
+  .topbar {
+    background: #12395f;
+    color: #fff;
+    padding: 0 18px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand .mark {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: .3px;
+  }
+  .brand .sub {
+    font-size: 11px;
+    color: #a8c0d8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .userbox { font-size: 12px; color: #cbdaea; }
+  .userbox strong { color: #fff; font-weight: 600; }
+
+  .utilitybar {
+    background: #1d5185;
+    color: #cddcea;
+    font-size: 11px;
+    padding: 5px 18px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Layout */
+  .shell { display: flex; min-height: calc(100vh - 76px); }
+  .sidenav {
+    width: 190px;
+    background: #dfe5ec;
+    border-right: 1px solid #c2ccd8;
+    padding-top: 10px;
+    flex-shrink: 0;
+  }
+  .sidenav .group {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: #6b7a8c;
+    padding: 12px 14px 5px;
+  }
+  .navitem {
+    display: block;
+    padding: 8px 14px;
+    color: #24425f;
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    user-select: none;
+  }
+  .navitem:hover { background: #d2dae4; }
+  .navitem.active {
+    background: #fff;
+    border-left-color: #12395f;
+    font-weight: 600;
+  }
+
+  .content { flex: 1; padding: 18px 24px; }
+  .crumb { font-size: 11px; color: #6b7a8c; margin-bottom: 10px; }
+  h1 { font-size: 19px; font-weight: 600; color: #12395f; margin-bottom: 3px; }
+  .pagesub { font-size: 12px; color: #6b7a8c; margin-bottom: 16px; }
+
+  .panel {
+    background: #fff;
+    border: 1px solid #c9d2dc;
+    margin-bottom: 16px;
+  }
+  .panel-hd {
+    background: #f2f5f8;
+    border-bottom: 1px solid #c9d2dc;
+    padding: 8px 14px;
+    font-weight: 600;
+    font-size: 12px;
+    color: #24425f;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .panel-bd { padding: 14px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th {
+    text-align: left;
+    background: #f7f9fb;
+    border-bottom: 1px solid #c9d2dc;
+    padding: 7px 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: #55677c;
+  }
+  td { padding: 8px 10px; border-bottom: 1px solid #e6ebf0; }
+  tr:hover td { background: #f6f9fc; }
+  .num { text-align: right; font-family: Consolas, "Courier New", monospace; }
+  .acct { font-family: Consolas, "Courier New", monospace; font-size: 12px; }
+
+  .pill {
+    display: inline-block;
+    padding: 2px 7px;
+    font-size: 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+  }
+  .pill.ok { background: #dff0d8; color: #376b2c; }
+  .pill.warn { background: #fcf3d4; color: #8a6d1f; }
+  .pill.pending { background: #e4ecf5; color: #35597f; }
+
+  /* Forms */
+  .field { margin-bottom: 13px; }
+  label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #4a5a6d;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+  }
+  input[type=text], input[type=number], select, textarea {
+    width: 100%;
+    max-width: 420px;
+    padding: 6px 8px;
+    border: 1px solid #b6c1cd;
+    background: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    color: #333;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: 2px solid #4a8ac9;
+    outline-offset: -1px;
+    border-color: #4a8ac9;
+  }
+  .hint { font-size: 11px; color: #7d8b9c; margin-top: 3px; }
+  .row2 { display: flex; gap: 18px; flex-wrap: wrap; }
+  .row2 .field { flex: 1; min-width: 220px; }
+
+  .btn {
+    padding: 7px 16px;
+    border: 1px solid #12395f;
+    background: #1d5185;
+    color: #fff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn:hover { background: #12395f; }
+  .btn.secondary {
+    background: #fff;
+    color: #1d5185;
+    border-color: #b6c1cd;
+  }
+  .btn.secondary:hover { background: #f0f4f8; }
+  .btnrow { display: flex; gap: 9px; margin-top: 6px; }
+
+  .notice {
+    background: #fdf6e3;
+    border: 1px solid #e6d9a8;
+    padding: 9px 12px;
+    font-size: 12px;
+    color: #6d5a1c;
+    margin-bottom: 14px;
+  }
+  .success {
+    background: #eaf4e6;
+    border: 1px solid #b9d6ab;
+    padding: 14px;
+    color: #33632a;
+  }
+  .success h2 { font-size: 15px; margin-bottom: 6px; }
+
+  .review dl { display: grid; grid-template-columns: 180px 1fr; row-gap: 9px; font-size: 13px; }
+  .review dt { color: #6b7a8c; font-size: 12px; }
+  .review dd { font-family: Consolas, "Courier New", monospace; }
+
+  .stepbar { display: flex; gap: 0; margin-bottom: 16px; font-size: 11px; }
+  .step {
+    padding: 6px 16px 6px 22px;
+    background: #e2e8ef;
+    color: #7d8b9c;
+    position: relative;
+    border-right: 2px solid #fff;
+  }
+  .step.on { background: #1d5185; color: #fff; font-weight: 600; }
+  .step.done { background: #b8cade; color: #2b4c6e; }
+
+  .hidden { display: none; }
+  footer {
+    padding: 12px 24px;
+    font-size: 11px;
+    color: #8494a5;
+    border-top: 1px solid #d3dbe4;
+    background: #e7ecf1;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="mark">NorthShore Commercial Bank</span>
+    <span class="sub">Treasury Direct</span>
+  </div>
+  <div class="userbox">
+    Company ID <strong>ALLST-4471</strong> &nbsp;|&nbsp; <strong>L. CIRRINCIONE</strong> &nbsp;|&nbsp; <a href="#" style="color:#cbdaea">Sign out</a>
+  </div>
+</div>
+<div class="utilitybar">
+  <span>Session expires in 14:52</span>
+  <span>Last sign-in: Aug 17, 2026 07:41 CT &nbsp;|&nbsp; Cutoff for same-day wires: 3:00 PM CT</span>
+</div>
+
+<div class="shell">
+  <nav class="sidenav">
+    <div class="group">Accounts</div>
+    <a class="navitem active" data-view="positions">Balances &amp; Positions</a>
+    <a class="navitem" data-view="positions">Transaction Search</a>
+    <a class="navitem" data-view="positions">Statements</a>
+    <div class="group">Payments</div>
+    <a class="navitem" data-view="wire">Wire Transfer</a>
+    <a class="navitem" data-view="positions">ACH Origination</a>
+    <a class="navitem" data-view="positions">Payment Templates</a>
+    <div class="group">Administration</div>
+    <a class="navitem" data-view="positions">User Entitlements</a>
+    <a class="navitem" data-view="positions">Approval Rules</a>
+    <a class="navitem" data-view="positions">Audit Log</a>
+  </nav>
+
+  <main class="content">
+
+    <!-- POSITIONS VIEW -->
+    <section id="positions">
+      <div class="crumb">Accounts &rsaquo; Balances &amp; Positions</div>
+      <h1>Balances &amp; Positions</h1>
+      <div class="pagesub">As of Aug 18, 2026 08:15 CT &middot; 6 of 1,512 enterprise accounts shown &middot; Filter: Operating &mdash; Disbursement</div>
+
+      <div class="notice">
+        3 accounts are projected below target funding threshold at today's 3:00 PM CT cutoff. Review before initiating disbursements.
+      </div>
+
+      <div class="panel">
+        <div class="panel-hd">
+          <span>Funding Positions</span>
+          <span style="font-weight:400;color:#7d8b9c">Refreshed 08:15:22 CT</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Account Name</th>
+              <th>Account Number</th>
+              <th>Routing</th>
+              <th class="num">Ledger Balance</th>
+              <th class="num">Available</th>
+              <th class="num">Target</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Enterprise Operating &mdash; Master</td>
+              <td class="acct">8840127732</td>
+              <td class="acct">071000505</td>
+              <td class="num">14,207,441.08</td>
+              <td class="num">14,207,441.08</td>
+              <td class="num">12,000,000.00</td>
+              <td><span class="pill ok">Funded</span></td>
+            </tr>
+            <tr>
+              <td>Claims Disbursement &mdash; P&amp;C</td>
+              <td class="acct">8840127918</td>
+              <td class="acct">071000505</td>
+              <td class="num">3,118,206.44</td>
+              <td class="num">2,904,881.10</td>
+              <td class="num">4,500,000.00</td>
+              <td><span class="pill warn">Below target</span></td>
+            </tr>
+            <tr>
+              <td>Payroll Funding &mdash; Enterprise</td>
+              <td class="acct">8840128044</td>
+              <td class="acct">071000505</td>
+              <td class="num">6,750,000.00</td>
+              <td class="num">6,750,000.00</td>
+              <td class="num">6,500,000.00</td>
+              <td><span class="pill ok">Funded</span></td>
+            </tr>
+            <tr>
+              <td>Agency Commissions Payable</td>
+              <td class="acct">8840128177</td>
+              <td class="acct">071000505</td>
+              <td class="num">881,455.29</td>
+              <td class="num">881,455.29</td>
+              <td class="num">1,250,000.00</td>
+              <td><span class="pill warn">Below target</span></td>
+            </tr>
+            <tr>
+              <td>Premium Collection &mdash; Lockbox</td>
+              <td class="acct">8840128390</td>
+              <td class="acct">071000505</td>
+              <td class="num">9,442,118.76</td>
+              <td class="num">9,442,118.76</td>
+              <td class="num">2,000,000.00</td>
+              <td><span class="pill ok">Funded</span></td>
+            </tr>
+            <tr>
+              <td>Reinsurance Settlement</td>
+              <td class="acct">8840128512</td>
+              <td class="acct">071000505</td>
+              <td class="num">412,900.15</td>
+              <td class="num">412,900.15</td>
+              <td class="num">2,750,000.00</td>
+              <td><span class="pill warn">Below target</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <div class="panel-hd"><span>Pending Approval Queue</span></div>
+        <table>
+          <thead>
+            <tr>
+              <th>Reference</th>
+              <th>Type</th>
+              <th>Beneficiary</th>
+              <th class="num">Amount</th>
+              <th>Initiated By</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="acct">WT-2608-44120</td>
+              <td>Domestic Wire</td>
+              <td>Meridian Reinsurance Ltd</td>
+              <td class="num">2,337,500.00</td>
+              <td>R. Delgado</td>
+              <td><span class="pill pending">Awaiting approval</span></td>
+            </tr>
+            <tr>
+              <td class="acct">WT-2608-44119</td>
+              <td>Domestic Wire</td>
+              <td>Cascade Adjusters LLC</td>
+              <td class="num">148,220.00</td>
+              <td>R. Delgado</td>
+              <td><span class="pill pending">Awaiting approval</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- WIRE STEP 1 -->
+    <section id="wire" class="hidden">
+      <div class="crumb">Payments &rsaquo; Wire Transfer &rsaquo; New Request</div>
+      <h1>New Wire Transfer</h1>
+      <div class="pagesub">Domestic wire &middot; Same-day cutoff 3:00 PM CT &middot; Dual approval required above $100,000.00</div>
+
+      <div class="stepbar">
+        <div class="step on">1. Payment details</div>
+        <div class="step">2. Review</div>
+        <div class="step">3. Confirmation</div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-hd"><span>Originating Account</span></div>
+        <div class="panel-bd">
+          <div class="field">
+            <label for="fromAcct">Debit From</label>
+            <select id="fromAcct">
+              <option>Select an account…</option>
+              <option>Enterprise Operating — Master · 8840127732 · Avail 14,207,441.08</option>
+              <option>Claims Disbursement — P&amp;C · 8840127918 · Avail 2,904,881.10</option>
+              <option>Payroll Funding — Enterprise · 8840128044 · Avail 6,750,000.00</option>
+              <option>Premium Collection — Lockbox · 8840128390 · Avail 9,442,118.76</option>
+            </select>
+            <div class="hint">Routing number 071000505 &middot; NorthShore Commercial Bank, Chicago IL</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-hd"><span>Beneficiary</span></div>
+        <div class="panel-bd">
+          <div class="row2">
+            <div class="field">
+              <label for="benName">Beneficiary Name</label>
+              <input type="text" id="benName" placeholder="Legal entity name">
+            </div>
+            <div class="field">
+              <label for="benAcct">Beneficiary Account Number</label>
+              <input type="text" id="benAcct" placeholder="e.g. 4471902288">
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="benRoute">Beneficiary Routing (ABA)</label>
+              <input type="text" id="benRoute" placeholder="9 digits">
+            </div>
+            <div class="field">
+              <label for="benBank">Beneficiary Bank</label>
+              <input type="text" id="benBank" placeholder="Receiving institution">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-hd"><span>Payment Instruction</span></div>
+        <div class="panel-bd">
+          <div class="row2">
+            <div class="field">
+              <label for="amt">Amount (USD)</label>
+              <input type="text" id="amt" placeholder="0.00">
+            </div>
+            <div class="field">
+              <label for="valueDate">Value Date</label>
+              <input type="text" id="valueDate" value="08/18/2026">
+            </div>
+          </div>
+          <div class="field">
+            <label for="obi">Originator to Beneficiary Information</label>
+            <textarea id="obi" rows="2" placeholder="Reference / invoice detail"></textarea>
+          </div>
+          <div class="field">
+            <label for="approver">Route to Approver</label>
+            <select id="approver">
+              <option>Select approver…</option>
+              <option>M. Holub — Treasury (Limit $5,000,000)</option>
+              <option>J. Clevinger — Controller (Limit $10,000,000)</option>
+              <option>L. Cirrincione — Director, Cash &amp; Banking (No limit)</option>
+            </select>
+          </div>
+          <div class="btnrow">
+            <button class="btn" id="toReview">Continue to Review</button>
+            <button class="btn secondary" id="cancel1">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WIRE STEP 2 -->
+    <section id="review" class="hidden">
+      <div class="crumb">Payments &rsaquo; Wire Transfer &rsaquo; Review</div>
+      <h1>Review Wire Transfer</h1>
+      <div class="pagesub">Verify all details before submitting. Wires cannot be recalled after release.</div>
+
+      <div class="stepbar">
+        <div class="step done">1. Payment details</div>
+        <div class="step on">2. Review</div>
+        <div class="step">3. Confirmation</div>
+      </div>
+
+      <div class="notice">
+        This payment exceeds $100,000.00 and requires approval from a second entitled user before release.
+      </div>
+
+      <div class="panel review">
+        <div class="panel-hd"><span>Payment Summary</span></div>
+        <div class="panel-bd">
+          <dl>
+            <dt>Debit account</dt><dd id="rFrom">&mdash;</dd>
+            <dt>Originating routing</dt><dd>071000505</dd>
+            <dt>Beneficiary</dt><dd id="rBenName">&mdash;</dd>
+            <dt>Beneficiary account</dt><dd id="rBenAcct">&mdash;</dd>
+            <dt>Beneficiary routing</dt><dd id="rBenRoute">&mdash;</dd>
+            <dt>Beneficiary bank</dt><dd id="rBenBank">&mdash;</dd>
+            <dt>Amount</dt><dd id="rAmt">&mdash;</dd>
+            <dt>Value date</dt><dd id="rDate">&mdash;</dd>
+            <dt>Routed to</dt><dd id="rApprover">&mdash;</dd>
+          </dl>
+          <div class="btnrow" style="margin-top:16px">
+            <button class="btn" id="submitWire">Submit for Approval</button>
+            <button class="btn secondary" id="backToEdit">Back to Edit</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WIRE STEP 3 -->
+    <section id="confirm" class="hidden">
+      <div class="crumb">Payments &rsaquo; Wire Transfer &rsaquo; Confirmation</div>
+      <h1>Wire Submitted</h1>
+      <div class="pagesub">Request has been routed for approval.</div>
+
+      <div class="stepbar">
+        <div class="step done">1. Payment details</div>
+        <div class="step done">2. Review</div>
+        <div class="step on">3. Confirmation</div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-bd">
+          <div class="success">
+            <h2>Submitted for approval</h2>
+            <div>Reference number <strong id="refNum">WT-2608-44121</strong></div>
+            <div style="margin-top:6px">Routed to <span id="cApprover">approver</span>. You will receive a notification when the payment is released or returned.</div>
+          </div>
+          <div class="btnrow" style="margin-top:16px">
+            <button class="btn secondary" id="newWire">Create Another Wire</button>
+            <button class="btn secondary" id="backHome">Return to Positions</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  NorthShore Commercial Bank &middot; Treasury Direct v4.2.1 &middot; Member FDIC &middot; Demonstration environment. All account data is fictitious.
+</footer>
+
+<script>
+  var views = ['positions','wire','review','confirm'];
+  function show(id) {
+    views.forEach(function(v){ document.getElementById(v).classList.add('hidden'); });
+    document.getElementById(id).classList.remove('hidden');
+    window.scrollTo(0,0);
+  }
+
+  document.querySelectorAll('.navitem').forEach(function(el){
+    el.addEventListener('click', function(){
+      document.querySelectorAll('.navitem').forEach(function(n){ n.classList.remove('active'); });
+      el.classList.add('active');
+      show(el.dataset.view);
+    });
+  });
+
+  document.getElementById('toReview').addEventListener('click', function(){
+    document.getElementById('rFrom').textContent = document.getElementById('fromAcct').value;
+    document.getElementById('rBenName').textContent = document.getElementById('benName').value || '—';
+    document.getElementById('rBenAcct').textContent = document.getElementById('benAcct').value || '—';
+    document.getElementById('rBenRoute').textContent = document.getElementById('benRoute').value || '—';
+    document.getElementById('rBenBank').textContent = document.getElementById('benBank').value || '—';
+    document.getElementById('rAmt').textContent = document.getElementById('amt').value || '—';
+    document.getElementById('rDate').textContent = document.getElementById('valueDate').value || '—';
+    document.getElementById('rApprover').textContent = document.getElementById('approver').value;
+    show('review');
+  });
+
+  document.getElementById('backToEdit').addEventListener('click', function(){ show('wire'); });
+  document.getElementById('cancel1').addEventListener('click', function(){ show('positions'); });
+
+  document.getElementById('submitWire').addEventListener('click', function(){
+    document.getElementById('cApprover').textContent = document.getElementById('approver').value;
+    show('confirm');
+  });
+
+  document.getElementById('newWire').addEventListener('click', function(){ show('wire'); });
+  document.getElementById('backHome').addEventListener('click', function(){ show('positions'); });
+</script>
+
+</body>
+</html>
